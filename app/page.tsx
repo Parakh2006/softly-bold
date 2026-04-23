@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type Scenario = {
   id: number;
@@ -58,12 +58,27 @@ export default function Home() {
   const [apiFeedback, setApiFeedback] = useState<ApiFeedback | null>(null);
   const [apiError, setApiError] = useState("");
 
+  const scenariosRef = useRef<HTMLDivElement | null>(null);
+  const practiceRef = useRef<HTMLDivElement | null>(null);
+
+  function scrollToScenarios() {
+    scenariosRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function scrollToPractice() {
+    practiceRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   function handleScenarioClick(scenario: Scenario) {
     setSelectedScenario(scenario);
     setResponse("");
     setShowFeedback(false);
     setApiFeedback(null);
     setApiError("");
+
+    setTimeout(() => {
+      scrollToPractice();
+    }, 50);
   }
 
   async function handleGetFeedback() {
@@ -104,6 +119,10 @@ export default function Home() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#F7F3EF] text-[#3A3A3A]">
       <style>{`
+        html {
+          scroll-behavior: smooth;
+        }
+
         @keyframes floatSlow {
           0% { transform: translateY(0px) rotate(0deg); }
           50% { transform: translateY(-10px) rotate(1deg); }
@@ -137,39 +156,39 @@ export default function Home() {
 
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <div className="absolute left-[2%] top-[10%] float-slower opacity-70">
-          <FlowerBranch className="h-32 w-24 md:h-40 md:w-28" />
+          <FlowerBranch className="h-24 w-20 md:h-40 md:w-28" />
         </div>
 
         <div className="absolute left-[15%] top-[10%] float-slow opacity-75">
-          <LavenderStem className="h-24 w-16 md:h-28 md:w-20" />
+          <LavenderStem className="h-20 w-14 md:h-28 md:w-20" />
         </div>
 
         <div className="absolute right-[6%] top-[12%] float-slower opacity-80">
-          <LavenderStem className="h-32 w-20 md:h-44 md:w-24" />
+          <LavenderStem className="h-24 w-16 md:h-44 md:w-24" />
         </div>
 
         <div className="absolute left-[6%] bottom-[12%] float-slow opacity-80">
-          <BigFlowerStem className="h-36 w-24 md:h-44 md:w-28" />
+          <BigFlowerStem className="h-28 w-20 md:h-44 md:w-28" />
         </div>
 
         <div className="absolute right-[6%] bottom-[2%] float-slower opacity-85">
-          <CherryBranch className="h-44 w-32 md:h-64 md:w-44" />
+          <CherryBranch className="h-36 w-24 md:h-64 md:w-44" />
         </div>
 
         <div className="absolute left-[12%] top-[38%] float-slower opacity-65">
-          <SmallBranch className="h-20 w-16 md:h-24 md:w-20" />
+          <SmallBranch className="h-16 w-14 md:h-24 md:w-20" />
         </div>
 
         <div className="absolute right-[14%] top-[48%] float-slow opacity-60">
-          <TulipStem className="h-16 w-12 md:h-20 md:w-16" />
+          <TulipStem className="h-14 w-10 md:h-20 md:w-16" />
         </div>
 
         <div className="absolute left-[26%] bottom-[7%] float-slow opacity-65">
-          <TulipStem className="h-16 w-12 md:h-20 md:w-16" />
+          <TulipStem className="h-14 w-10 md:h-20 md:w-16" />
         </div>
 
         <div className="absolute right-[22%] bottom-[9%] float-slower opacity-60">
-          <SmallLavender className="h-14 w-12 md:h-16 md:w-14" />
+          <SmallLavender className="h-12 w-10 md:h-16 md:w-14" />
         </div>
 
         <div className="absolute left-[30%] top-[18%] petal-drift">
@@ -189,9 +208,9 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4 py-8 sm:px-6 md:py-10">
-        <div className="w-full max-w-6xl rounded-[32px] border border-white/40 bg-[#F2E8E5]/88 px-5 py-8 shadow-[0_20px_60px_rgba(120,100,100,0.08)] backdrop-blur-[2px] sm:px-8 md:px-10 md:py-10 lg:px-12">
-          <div className="grid items-start gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+      <section className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-start justify-center px-4 py-5 sm:px-6 md:items-center md:py-10">
+        <div className="w-full max-w-6xl rounded-[24px] border border-white/40 bg-[#F2E8E5]/88 px-4 py-5 shadow-[0_20px_60px_rgba(120,100,100,0.08)] backdrop-blur-[2px] sm:px-8 sm:py-8 md:rounded-[32px] md:px-10 md:py-10 lg:px-12">
+          <div className="grid items-start gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
             <div className="text-center lg:text-left">
               <p className="mb-3 text-xs uppercase tracking-[0.35em] text-[#8B7C92] sm:text-sm">
                 Softly Bold
@@ -203,21 +222,21 @@ export default function Home() {
                 <div className="h-px w-12 bg-[#D8CFE8]" />
               </div>
 
-              <h1 className="mx-auto mb-5 max-w-2xl text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-5xl lg:mx-0 lg:text-6xl">
+              <h1 className="mx-auto mb-4 max-w-2xl text-3xl font-semibold leading-[1.08] tracking-[-0.03em] sm:text-5xl lg:mx-0 lg:text-6xl">
                 You’re allowed to be soft and still be strong.
               </h1>
 
-              <div className="mx-auto max-w-2xl text-[15px] leading-7 text-[#575757] sm:text-base sm:leading-8 lg:mx-0">
+              <div className="mx-auto max-w-2xl text-[14px] leading-6 text-[#575757] sm:text-base sm:leading-8 lg:mx-0">
                 <p>
-                  You know what feels right for you, but when it comes to speaking up,
-                  it can feel uncomfortable — and you’re still learning how to do it
-                  without losing your softness.
+                  You know what feels right for you, but when it comes to speaking
+                  up, it can feel uncomfortable — and you’re still learning how to
+                  do it without losing your softness.
                 </p>
               </div>
 
-              <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+              <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
                 <button
-                  onClick={() => handleScenarioClick(scenarios[0])}
+                  onClick={scrollToScenarios}
                   className="inline-flex items-center gap-2 rounded-full bg-[#D8CFE8] px-6 py-3 text-base font-medium text-[#4A4352] transition duration-300 hover:-translate-y-[1px] hover:opacity-95"
                 >
                   Start Practicing
@@ -225,7 +244,7 @@ export default function Home() {
                 </button>
 
                 <button
-                  onClick={() => handleScenarioClick(scenarios[1])}
+                  onClick={scrollToScenarios}
                   className="inline-flex items-center gap-2 rounded-full border border-[#D8CFE8] bg-white/35 px-6 py-3 text-base font-medium text-[#4A4352] transition duration-300 hover:bg-white/50"
                 >
                   Explore Scenarios
@@ -234,9 +253,9 @@ export default function Home() {
               </div>
             </div>
 
-            <div>
+            <div ref={scenariosRef}>
               <div className="mb-4 text-center lg:text-left">
-                <h2 className="mb-2 text-2xl font-semibold md:text-3xl">
+                <h2 className="mb-2 text-xl font-semibold sm:text-2xl md:text-3xl">
                   Start with a moment that feels familiar
                 </h2>
                 <p className="text-sm leading-6 text-[#6B6B6B] md:text-base">
@@ -246,7 +265,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 {scenarios.map((scenario) => {
                   const isActive = selectedScenario?.id === scenario.id;
 
@@ -254,7 +273,7 @@ export default function Home() {
                     <button
                       key={scenario.id}
                       onClick={() => handleScenarioClick(scenario)}
-                      className={`rounded-[26px] border p-5 text-left shadow-sm transition ${
+                      className={`rounded-[20px] border p-4 text-left shadow-sm transition sm:rounded-[26px] sm:p-5 ${
                         isActive
                           ? "border-[#CBBBE1] bg-white/75 shadow-md"
                           : "border-white/30 bg-[#F7F3EF]/80 hover:-translate-y-[2px] hover:bg-white/60 hover:shadow-md"
@@ -274,12 +293,15 @@ export default function Home() {
           </div>
 
           {selectedScenario && (
-            <div className="mt-8 rounded-[28px] border border-white/40 bg-[#F7F3EF]/75 p-6 shadow-sm">
+            <div
+              ref={practiceRef}
+              className="mt-6 rounded-[20px] border border-white/40 bg-[#F7F3EF]/75 p-4 shadow-sm sm:mt-8 sm:rounded-[28px] sm:p-6"
+            >
               <div className="mb-4">
                 <p className="mb-2 text-xs uppercase tracking-[0.28em] text-[#8B7C92]">
                   Practice area
                 </p>
-                <h3 className="mb-2 text-2xl font-semibold">
+                <h3 className="mb-2 text-xl font-semibold sm:text-2xl">
                   {selectedScenario.title}
                 </h3>
                 <p className="mb-3 max-w-3xl text-sm leading-6 text-[#666666] md:text-base">
@@ -295,7 +317,7 @@ export default function Home() {
                   value={response}
                   onChange={(e) => setResponse(e.target.value)}
                   placeholder="Write the response you wish you could say in that moment..."
-                  className="min-h-[140px] w-full rounded-[24px] border border-[#E7DDDA] bg-white/80 px-5 py-4 text-[15px] text-[#3A3A3A] outline-none transition placeholder:text-[#9A9191] focus:border-[#D8CFE8]"
+                  className="min-h-[120px] w-full rounded-[20px] border border-[#E7DDDA] bg-white/80 px-4 py-3 text-[14px] text-[#3A3A3A] outline-none transition placeholder:text-[#9A9191] focus:border-[#D8CFE8] sm:min-h-[140px] sm:rounded-[24px] sm:px-5 sm:py-4 sm:text-[15px]"
                 />
 
                 <div className="flex flex-col gap-3 sm:flex-row">
